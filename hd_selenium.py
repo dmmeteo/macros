@@ -17,21 +17,21 @@ if sys.version_info[0] == 3:
     xrange = range
     raw_input = input
 
-user, pasw = raw_input('Username:'), getpass()
-spam = ['example@spam.com']
-base_url = 'https://example.com/'
-driver = webdriver.Chrome()
-driver.get(base_url)
+USER, PASW = raw_input('Username:'), getpass()
+SPAM = ['example@spam.com']
+BASE_URL = 'https://example.com/'
+browser = webdriver.Chrome()
+browser.get(BASE_URL)
 
 
 def elements():
-    res = [e for e in driver.find_elements_by_tag_name('td') if e.text in spam]
+    res = [e for e in browser.find_elements_by_tag_name('td') if e.text in SPAM]
     return {'len': len(res),
             'elm': res}
 
 try:
-    driver.find_element_by_id('id_username').send_keys(user)
-    driver.find_element_by_id('id_password').send_keys(pasw + Keys.RETURN)
+    browser.find_element_by_id('id_username').send_keys(USER)
+    browser.find_element_by_id('id_password').send_keys(PASW + Keys.RETURN)
     counter = elements()['len']
     if counter != 0:
         print('Spam mails: %s' % counter)
@@ -39,11 +39,11 @@ try:
         for i in xrange(counter):
             element = elements()['elm']
             element[-1].click()
-            driver.find_element_by_link_text(u'Редактировать').click()
-            driver.find_element_by_id('id_closed').click()
+            browser.find_element_by_link_text(u'Редактировать').click()
+            browser.find_element_by_id('id_closed').click()
             print('kill %s' % str(i+1))
-            driver.find_element_by_xpath('//input[@type="submit"]').click()
-            driver.get(base_url)
+            browser.find_element_by_xpath('//input[@type="submit"]').click()
+            browser.get(BASE_URL)
 finally:
     print('fin!')
-    driver.quit()
+    browser.quit()
