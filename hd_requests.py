@@ -42,6 +42,7 @@ with requests.session() as s:
                 'submit': u'Сохранить'
             })
             r = s.post(t['url'], data=data_dict, headers=dict(Referer=SECONDARY_URL)) # TODO not working - need fix
+            print(r.content)
             
             counter += 1
             print('kill %s' % counter)
